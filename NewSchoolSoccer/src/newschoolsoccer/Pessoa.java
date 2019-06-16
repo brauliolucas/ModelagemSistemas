@@ -12,7 +12,7 @@ import java.util.*;
  * @author ice
  */
 public class Pessoa {
-    
+
     String nome;
     String nascimento;
     String endereco;
@@ -49,14 +49,5 @@ public class Pessoa {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
 
-    
-    
-    
-    
 }
-
-
-
-

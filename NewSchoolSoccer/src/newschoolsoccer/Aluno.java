@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package newschoolsoccer;
+
 import java.util.*;
 
 /**
@@ -11,7 +12,7 @@ import java.util.*;
  * @author ice
  */
 public class Aluno extends Pessoa {
-    
+
     public List<Boolean> frequencia;
     protected int mensalidade; //quantidade de meses sem pagar
     protected float peso;
@@ -22,34 +23,21 @@ public class Aluno extends Pessoa {
     public Aluno() {
         this.frequencia = new ArrayList<>();
     }
-    
 
-
-    public void geraCategoria(Aluno a1){
-
+    public void geraCategoria() {
 
         ///pega ano e calcula idade atual
-        int x=0;
+        int x = 0;
+        
+        this.setCategoria(x);
+    }
 
-        a1.setCategoria(x);
-    }  
-
-
-    public float calculaMensalidade(){
+    public float calculaMensalidade() {
 
         float valor = 50;
 
-
-
-        return mensalidade*valor;
+        return mensalidade * valor;
     }
-
-      
-    
-    
-    
-    
-    
 
     public int getMensalidade() {
         return mensalidade;
@@ -91,10 +79,4 @@ public class Aluno extends Pessoa {
         this.status = status;
     }
 
-
-
-  
-  
-  
 }
-
