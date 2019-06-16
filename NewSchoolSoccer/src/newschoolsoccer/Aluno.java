@@ -13,7 +13,7 @@ import java.util.*;
 public class Aluno extends Pessoa {
     
     public List<Boolean> frequencia;
-    protected int mensalidade; //quantidade de meses ?
+    protected int mensalidade; //quantidade de meses sem pagar
     protected float peso;
     protected float altura;
     protected int categoria;
@@ -35,13 +35,13 @@ public class Aluno extends Pessoa {
     }  
 
 
-    public float calculaMensalidade(Aluno a1){
+    public float calculaMensalidade(){
 
         float valor = 50;
 
 
 
-        return a1.mensalidade*valor;
+        return mensalidade*valor;
     }
 
       

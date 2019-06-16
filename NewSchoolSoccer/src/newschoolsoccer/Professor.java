@@ -5,6 +5,8 @@
  */
 package newschoolsoccer;
 
+import java.util.Scanner;
+
 /**
  *
  * @author ice
@@ -20,10 +22,17 @@ public class Professor extends Pessoa {
     public void controlePresenca(Aluno alunos[]){
         
         
-        for(int i=0;i<alunos.length;i++){
+        for (Aluno aluno : alunos) {
+            Scanner keyboard = new Scanner(System.in);
+            System.out.println("Aluno : " + aluno.getNome());
+            int x = keyboard.nextInt();
+            Boolean presenca;
             
-            alunos[i].frequencia.add(Boolean.TRUE);
-                
+            if(x == 0) presenca = false;
+            
+            else presenca = true;
+            
+            aluno.frequencia.add(presenca);
         }
         
         
