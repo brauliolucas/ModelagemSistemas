@@ -5,6 +5,9 @@
  */
 package newschoolsoccer;
 
+import InterfacesGraficas.Logar;
+import InterfacesGraficas.TelaLogin;
+
 /**
  *
  * @author ice
@@ -15,7 +18,8 @@ public class NewSchoolSoccer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        TelaLogin tela = new TelaLogin(new Logar());
+        tela.setVisible(true);
     }
     
 }
