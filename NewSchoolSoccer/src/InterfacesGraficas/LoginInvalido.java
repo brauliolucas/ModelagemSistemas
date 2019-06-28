@@ -5,6 +5,9 @@
  */
 package InterfacesGraficas;
 
+import java.awt.Window;
+import javax.swing.JFrame;
+
 /**
  *
  * @author John
@@ -32,6 +35,7 @@ public class LoginInvalido extends javax.swing.JPanel {
         texttoLogin = new javax.swing.JLabel();
         botaoSenha = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        esqueciSenha = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(94, 109, 252));
 
@@ -65,6 +69,15 @@ public class LoginInvalido extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Um e-mail será enviado com a nova senha");
 
+        esqueciSenha.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        esqueciSenha.setForeground(new java.awt.Color(255, 255, 255));
+        esqueciSenha.setText("Login");
+        esqueciSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                esqueciSenhaMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -85,6 +98,10 @@ public class LoginInvalido extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(botaoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(229, 229, 229)))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(308, 308, 308)
+                .addComponent(esqueciSenha)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,7 +118,9 @@ public class LoginInvalido extends javax.swing.JPanel {
                 .addComponent(botaoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46)
                 .addComponent(jLabel1)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(esqueciSenha)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -121,11 +140,18 @@ public class LoginInvalido extends javax.swing.JPanel {
 
     }//GEN-LAST:event_botaoSenhaActionPerformed
 
+    private void esqueciSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_esqueciSenhaMouseClicked
+        ((Window) getRootPane().getParent()).dispose();
+        JFrame novo = new TelaLogin(new Logar());
+        novo.setVisible(true);
+    }//GEN-LAST:event_esqueciSenhaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoSenha;
     private javax.swing.JTextField campoLogin;
     private javax.swing.JLabel escudo;
+    private javax.swing.JLabel esqueciSenha;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel texttoLogin;
     // End of variables declaration//GEN-END:variables
