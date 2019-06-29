@@ -5,14 +5,29 @@
  */
 package InterfacesGraficas;
 
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import static javax.swing.text.StyleConstants.FontFamily;
 
 /**
  *
@@ -64,6 +79,10 @@ public class JanelaComAbas extends javax.swing.JFrame {
         textoData3 = new javax.swing.JLabel();
         textoData6 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        imprimirAniversariantes1 = new javax.swing.JButton();
+        nomeEscalacao = new javax.swing.JTextField();
+        textoData7 = new javax.swing.JLabel();
+        textoData8 = new javax.swing.JLabel();
         abaProfessores = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -205,18 +224,41 @@ public class JanelaComAbas extends javax.swing.JFrame {
 
         jButton2.setText("Novo Aluno");
 
+        imprimirAniversariantes1.setText("Imprimir Escalação");
+        imprimirAniversariantes1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imprimirAniversariantes1ActionPerformed(evt);
+            }
+        });
+
+        nomeEscalacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nomeEscalacaoActionPerformed(evt);
+            }
+        });
+
+        textoData7.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
+        textoData7.setForeground(new java.awt.Color(255, 255, 255));
+        textoData7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        textoData7.setText("Digite o nome da");
+
+        textoData8.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
+        textoData8.setForeground(new java.awt.Color(255, 255, 255));
+        textoData8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        textoData8.setText("escalação");
+
         javax.swing.GroupLayout editarAlunoLayout = new javax.swing.GroupLayout(editarAluno);
         editarAluno.setLayout(editarAlunoLayout);
         editarAlunoLayout.setHorizontalGroup(
             editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editarAlunoLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(editarAlunoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarAlunoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarAlunoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(mesInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(mesFim, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -225,26 +267,25 @@ public class JanelaComAbas extends javax.swing.JFrame {
                                     .addComponent(anoFim, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(anoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(37, 37, 37))
-                            .addGroup(editarAlunoLayout.createSequentialGroup()
-                                .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarAlunoLayout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(botaoEdicao, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(textoData3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(editarAlunoLayout.createSequentialGroup()
-                                        .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(imprimirAniversariantes, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(editarAlunoLayout.createSequentialGroup()
-                                                .addGap(19, 19, 19)
-                                                .addComponent(textoData6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarAlunoLayout.createSequentialGroup()
+                                .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(textoData, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                                    .addComponent(textoData2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarAlunoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(textoData, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                            .addComponent(textoData2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textoData7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nomeEscalacao)
+                            .addComponent(imprimirAniversariantes, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(imprimirAniversariantes1, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                            .addComponent(botaoEdicao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textoData3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(editarAlunoLayout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(textoData6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(textoData8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         editarAlunoLayout.setVerticalGroup(
@@ -265,7 +306,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
                 .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(mesFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(anoFim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(imprimirAniversariantes)
                 .addGap(18, 18, 18)
                 .addComponent(textoData3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,6 +316,14 @@ public class JanelaComAbas extends javax.swing.JFrame {
                 .addComponent(botaoEdicao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(textoData7, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(textoData8, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nomeEscalacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(imprimirAniversariantes1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -413,6 +462,11 @@ public class JanelaComAbas extends javax.swing.JFrame {
         jButton1.setText("Pesquisar");
 
         imprimirRelatorioBotao.setText("Imprimir relatório");
+        imprimirRelatorioBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imprimirRelatorioBotaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout abaFinanceiroLayout = new javax.swing.GroupLayout(abaFinanceiro);
         abaFinanceiro.setLayout(abaFinanceiroLayout);
@@ -553,6 +607,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
         getContentPane().add(TextoTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(264, 21, -1, -1));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void nomeDaEscolaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeDaEscolaActionPerformed
@@ -568,7 +623,29 @@ public class JanelaComAbas extends javax.swing.JFrame {
     }//GEN-LAST:event_anoInicioActionPerformed
 
     private void imprimirAniversariantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirAniversariantesActionPerformed
+        
+        Document arquivoPDF = new Document();
+        try {
+            PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Aniversariantes.pdf"));
+            arquivoPDF.open();
+            
+            arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
+            arquivoPDF.add(new Paragraph("Lista de Aniversariantes"));
+            
 
+        } catch (DocumentException | FileNotFoundException ex) {
+            System.out.println("Erro! "+ex);
+        } catch (IOException ex) {
+            System.out.println("Erro! "+ex);
+        } finally {
+            arquivoPDF.close();
+        }
+        
+        try {
+            Desktop.getDesktop().open(new File("Aniversariantes.pdf"));
+        } catch (IOException ex) {
+            System.out.println("Erro! "+ex);
+        }
     }//GEN-LAST:event_imprimirAniversariantesActionPerformed
 
     private void anoInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anoInicio1ActionPerformed
@@ -582,6 +659,61 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private void botaoSolicitarMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSolicitarMaterialActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_botaoSolicitarMaterialActionPerformed
+
+    private void imprimirAniversariantes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirAniversariantes1ActionPerformed
+        Document arquivoPDF = new Document();
+        try {
+            PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Aniversariantes.pdf"));
+            arquivoPDF.open();
+            
+            arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
+            arquivoPDF.add(new Paragraph("Escalação "+nomeEscalacao.getText()));
+            
+
+        } catch (DocumentException | FileNotFoundException ex) {
+            System.out.println("Erro! "+ex);
+        } catch (IOException ex) {
+            System.out.println("Erro! "+ex);
+        } finally {
+            arquivoPDF.close();
+        }
+        
+        try {
+            Desktop.getDesktop().open(new File("Aniversariantes.pdf"));
+        } catch (IOException ex) {
+            System.out.println("Erro! "+ex);
+        }
+    }//GEN-LAST:event_imprimirAniversariantes1ActionPerformed
+
+    private void nomeEscalacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeEscalacaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nomeEscalacaoActionPerformed
+
+    private void imprimirRelatorioBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirRelatorioBotaoActionPerformed
+        Document arquivoPDF = new Document();
+        try {
+            PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Aniversariantes.pdf"));
+            arquivoPDF.open();
+            
+            arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
+            arquivoPDF.add(new Paragraph("Relatório Financeiro \nPeríodo: "+mesInicio1.getText()+"/"+anoInicio1.getText()
+            +" a "+mesFim1.getText()+"/"+anoFim1.getText()));
+            
+
+        } catch (DocumentException | FileNotFoundException ex) {
+            System.out.println("Erro! "+ex);
+        } catch (IOException ex) {
+            System.out.println("Erro! "+ex);
+        } finally {
+            arquivoPDF.close();
+        }
+        
+        try {
+            Desktop.getDesktop().open(new File("Aniversariantes.pdf"));
+        } catch (IOException ex) {
+            System.out.println("Erro! "+ex);
+        }
+    }//GEN-LAST:event_imprimirRelatorioBotaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -641,6 +773,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JPanel editarAluno;
     private javax.swing.JPanel home;
     private javax.swing.JButton imprimirAniversariantes;
+    private javax.swing.JButton imprimirAniversariantes1;
     private javax.swing.JButton imprimirRelatorioBotao;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -658,6 +791,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JTextField mesInicio;
     private javax.swing.JTextField mesInicio1;
     private javax.swing.JTextField nomeDaEscola;
+    private javax.swing.JTextField nomeEscalacao;
     private javax.swing.JTextField selecioanrProfessor;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTable tabelaAlunos;
@@ -668,6 +802,8 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JLabel textoData4;
     private javax.swing.JLabel textoData5;
     private javax.swing.JLabel textoData6;
+    private javax.swing.JLabel textoData7;
+    private javax.swing.JLabel textoData8;
     private javax.swing.JLabel textoSelecao;
     // End of variables declaration//GEN-END:variables
 }
