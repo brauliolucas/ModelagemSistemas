@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package newschoolsoccer;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 /**
  *
@@ -11,9 +13,19 @@ import java.util.Date;
  */
 public class Transacao {
     
-    int tipo;
+    int tipo;  ///0 = credito , 1 = debito
     float valor;
-    Date data;
+    Calendar data;
+
+    public Transacao(int tipo, float valor) {
+        this.tipo = tipo;
+        this.valor = valor;
+
+        this.data = Calendar.getInstance();
+        
+        
+        
+    }
     
     
     
