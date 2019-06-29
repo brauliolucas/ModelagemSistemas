@@ -7,6 +7,9 @@ package newschoolsoccer;
 
 import InterfacesGraficas.Logar;
 import InterfacesGraficas.TelaLogin;
+import java.sql.*;
+import java.util.List;
+
 
 /**
  *
@@ -17,9 +20,20 @@ public class NewSchoolSoccer {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        start();
+        
         TelaLogin tela = new TelaLogin(new Logar());
         tela.setVisible(true);
     }
     
+    public static void start(){
+        
+        Estoque estoque = new Estoque();
+        
+        List<Aluno> alunos;
+        
+        
+    }
+
 }

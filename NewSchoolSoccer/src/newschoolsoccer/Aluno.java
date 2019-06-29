@@ -15,7 +15,6 @@ public class Aluno extends Pessoa {
 
     public List<Boolean> frequencia;
     protected int mensalidade; //quantidade de meses sem pagar
-    protected float peso;
     protected float altura;
     protected int categoria;
     protected boolean status; //0 = inativo 1 = ativo
@@ -26,8 +25,9 @@ public class Aluno extends Pessoa {
 
     public void geraCategoria() {
 
-        ///pega ano e calcula idade atual
-        int x = 0;
+        int x=0;
+        
+        
         
         this.setCategoria(x);
     }
@@ -45,14 +45,6 @@ public class Aluno extends Pessoa {
 
     public void setMensalidade(int mensalidade) {
         this.mensalidade = mensalidade;
-    }
-
-    public float getPeso() {
-        return peso;
-    }
-
-    public void setPeso(float peso) {
-        this.peso = peso;
     }
 
     public float getAltura() {

@@ -14,7 +14,7 @@ import java.util.*;
 public class Pessoa {
 
     String nome;
-    String nascimento;
+    Date nascimento;
     String endereco;
     String telefone;
 
@@ -26,11 +26,11 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    public String getNascimento() {
+    public Date getNascimento() {
         return nascimento;
     }
 
-    public void setNascimento(String nascimento) {
+    public void setNascimento(Date nascimento) {
         this.nascimento = nascimento;
     }
 

@@ -1,0 +1,58 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package newschoolsoccer;
+
+/**
+ *
+ * @author Valgas
+ */
+public class Item {
+    
+    private String nome;
+    private int quantidade;
+    private float preco;
+    private int id;
+
+    
+    
+    public Item(String nome, int quantidade, float preco, int id) {
+        this.nome = nome;
+        this.quantidade = quantidade;
+        this.preco = preco;
+        this.id = id;
+    }
+
+    
+    
+    
+    
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void alterarQuantidade(int quantidade) {
+        this.quantidade = this.quantidade + quantidade;
+    }
+
+    public float getPreco() {
+        return preco;
+    }
+
+    public void setPreco(float preco) {
+        this.preco = preco;
+    }
+    
+    
+    
+}

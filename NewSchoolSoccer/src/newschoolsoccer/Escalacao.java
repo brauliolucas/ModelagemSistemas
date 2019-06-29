@@ -32,13 +32,22 @@ public class Escalacao {
     public void editarEscalacao(Aluno a1){
     
         Scanner keyboard = new Scanner(System.in);
+        
+        System.out.println("Pressione 1 pra add aluno e 0 para remover da escalação");
         System.out.println("Aluno : " + a1.getNome());
             
         //Inserir
-        alunos.add(a1);   
-        
-        //Excluir        
-        alunos.remove(a1);
+        switch (keyboard.nextInt()) {
+            case 1:   
+                alunos.add(a1);
+                break;
+            case 0:
+                alunos.remove(a1);
+                break;
+            default:
+                System.out.println("input invalido");
+                break;
+        }
 
 }
     

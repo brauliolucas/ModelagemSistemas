@@ -13,8 +13,8 @@ import java.util.Scanner;
  */
 public class Professor extends Pessoa {
 
-    private int cargo; // controle por ID
-    private float salario;
+    private int cargo; // controle por ID 0 Admin 1 Professor
+    private float salario; 
 
     public void controlePresenca(Aluno alunos[]) {
 
@@ -38,10 +38,12 @@ public class Professor extends Pessoa {
     }
     
     public void gerarEscalacao(Aluno alunos[]){
+            
+       Escalacao escalacao1 = new Escalacao();
+       for(Aluno aluno : alunos){
+        escalacao1.editarEscalacao(aluno);
         
-    
-    
-    
+       }
     
     }
     

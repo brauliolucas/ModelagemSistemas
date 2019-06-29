@@ -5,6 +5,8 @@
  */
 package newschoolsoccer;
 
+import java.util.List;
+
 /**
  *
  * @author Braulio
@@ -12,51 +14,48 @@ package newschoolsoccer;
 public class Estoque {
 
     ///
-    private int bola;
-    private int colete;
-    private int cone;
+    
+    private List<Item> itens;
+    
+    int idC;
 
-    public void retirarItem(int qnt, int id) {
-
-        switch (id) {
-            case 1:
-                bola = bola - qnt;
-                break;
-            case 2:
-                colete = colete - qnt;
-                break;
-            case 3:
-                cone = cone - qnt;
-                break;
-            default:
-                break;
+    public Estoque() {
+        idC=0;
+        ///Nome,quantidade,preco,ID
+        Item bola = new Item("Bola",0,50,idC);
+        itens.add(bola);
+        idC++;
+        Item cone = new Item("Cone",0,5,idC);
+        itens.add(cone);
+        idC++;
+        Item colete = new Item("Colete",0,15,idC);
+        itens.add(colete);
+        idC++;
+        
+    }
+    
+    
+    public void addItemEstoque(String nome, int qnt,float preco){
+        idC++;
+        Item itemNovo = new Item(nome,qnt,preco,idC);
+        
+        itens.add(itemNovo);
+    }
+    
+    public void imprimirEstoque(){
+        
+        for(Item item : itens){
+            System.out.println("Nome : "+ item.getNome());
+            System.out.println("Quantidade : "+ item.getQuantidade());
         }
-
+        
     }
-
-    public void addItem(int qnt, int id) {
-
-        switch (id) {
-            case 1:
-                bola = bola - qnt;
-                break;
-            case 2:
-                colete = colete - qnt;
-                break;
-            case 3:
-                cone = cone - qnt;
-                break;
-            default:
-                break;
-        }
-
+    
+    public void retirarItem(int qnt, int id){
+        
+        itens.get(id).alterarQuantidade(-qnt);
     }
-
-    public void imprimirEstoque() {
-        System.out.println("Quantidade de bolas : " + bola);
-        System.out.println("Quantidade de coletes : " + colete);
-        System.out.println("Quantidade de cones : " + cone);
-
-    }
-
+    
+    
+    
 }
