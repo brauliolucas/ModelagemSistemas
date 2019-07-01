@@ -18,9 +18,16 @@ public class Aluno extends Pessoa {
     protected float altura;
     protected int categoria;
     protected boolean status; //0 = inativo 1 = ativo
+    protected String posicao;
 
-    public Aluno() {
+    public Aluno(String nome, String endereco, String telefone, Date nascimento, int mensalidade, float altura, String posicao) {
+        super(nome, nascimento, endereco, telefone);
+        status = true;
         this.frequencia = new ArrayList<>();
+        this.altura = altura;
+        this.mensalidade = mensalidade;
+        this.posicao = posicao;
+        geraCategoria();
     }
 
     public void geraCategoria() {
@@ -69,6 +76,14 @@ public class Aluno extends Pessoa {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public void setPosicao(String posicao) {
+        this.posicao = posicao;
+    }
+
+    public String getPosicao() {
+        return posicao;
     }
 
 }

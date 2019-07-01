@@ -18,6 +18,21 @@ public class Pessoa {
     String endereco;
     String telefone;
 
+    public Pessoa(String nome, String endereco, String telefone) {
+        this.nome = nome;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+
+    public Pessoa(String nome, Date nascimento, String endereco, String telefone) {
+        this.nome = nome;
+        this.nascimento = nascimento;
+        this.endereco = endereco;
+        this.telefone = telefone;
+    }
+    
+
+
     public String getNome() {
         return nome;
     }

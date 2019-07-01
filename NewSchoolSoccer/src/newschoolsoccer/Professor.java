@@ -5,6 +5,7 @@
  */
 package newschoolsoccer;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -13,9 +14,18 @@ import java.util.Scanner;
  */
 public class Professor extends Pessoa {
 
-    private int cargo; // controle por ID 0 Admin 1 Professor
+    private int login; // controle por ID 0 Admin 1 Professor
     private float salario; 
 
+    public Professor(float salario, String nome, String endereco, String telefone, int login) {
+        super(nome, endereco, telefone);
+        this.login = login + 3000;
+        this.salario = salario;
+        
+    }
+    
+    
+    
     public void controlePresenca(Aluno alunos[]) {
 
         for (Aluno aluno : alunos) {
@@ -45,6 +55,22 @@ public class Professor extends Pessoa {
         
        }
     
+    }
+
+    public int getLogin() {
+        return login;
+    }
+
+    public float getSalario() {
+        return salario;
+    }
+
+    public void setLogin(int login) {
+        this.login = login;
+    }
+
+    public void setSalario(float salario) {
+        this.salario = salario;
     }
     
     
