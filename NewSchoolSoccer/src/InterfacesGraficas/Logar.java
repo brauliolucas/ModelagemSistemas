@@ -59,11 +59,6 @@ public class Logar extends javax.swing.JPanel {
                 campoLoginFocusLost(evt);
             }
         });
-        campoLogin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoLoginActionPerformed(evt);
-            }
-        });
 
         texttoLogin.setFont(new java.awt.Font("Calibri", 0, 25)); // NOI18N
         texttoLogin.setForeground(new java.awt.Color(255, 255, 255));
@@ -153,37 +148,23 @@ public class Logar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void campoLoginFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusGained
-        if(campoLogin.getText() != "")
-        {
-            campoLogin.setText("");
-            campoLogin.setForeground(new Color(0, 0, 0));
-        }
+        campoLogin.setText("");
+        campoLogin.setForeground(new Color(0, 0, 0));
 
     }//GEN-LAST:event_campoLoginFocusGained
 
     private void campoLoginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusLost
         if(campoLogin.getText().length() == 0)
         {
+            campoLogin.setEditable(true);
             campoLogin.setForeground(new Color(150, 150, 150));
             campoLogin.setText("Digite o seu login");
         }
     }//GEN-LAST:event_campoLoginFocusLost
 
     private void botaoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSenhaActionPerformed
-        /*necessario getSenha no usuario digitado*/
         ((Window) getRootPane().getParent()).dispose();
-        JFrame novo = null;
-        if("123".equals(campoSenha.getText()))
-        {
-            novo = new TelaLogin(new TrocaDeSenha());
-        }
-        else
-        {
-            novo = new JanelaComAbas();
-        }
-        
-        
-        
+        JFrame novo = new JanelaComAbas();
         novo.setVisible(true);
     }//GEN-LAST:event_botaoSenhaActionPerformed
 
@@ -192,10 +173,6 @@ public class Logar extends javax.swing.JPanel {
          JFrame novo = new TelaLogin(new LoginInvalido());
          novo.setVisible(true);
     }//GEN-LAST:event_esqueciSenhaMouseClicked
-
-    private void campoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLoginActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoLoginActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
