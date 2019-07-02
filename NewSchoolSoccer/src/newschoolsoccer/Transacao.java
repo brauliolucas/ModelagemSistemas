@@ -9,7 +9,10 @@ import java.util.Calendar;
 import java.util.Date;
 /**
  *
- * @author Valgas
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class Transacao {
     

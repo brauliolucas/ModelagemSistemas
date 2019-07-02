@@ -9,7 +9,10 @@ import java.util.*;
 
 /**
  *
- * @author ice
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class Aluno extends Pessoa {
 
@@ -24,12 +27,11 @@ public class Aluno extends Pessoa {
         super(nome, nascimento, endereco, telefone);
     }
 
-    public Aluno(List<Boolean> frequencia, int mensalidade, float altura, boolean status, String nome, Date nascimento, String endereco, String telefone, String posicao) {
+    public Aluno(float altura, String nome, Date nascimento, String endereco, String telefone, String posicao) {
         super(nome, nascimento, endereco, telefone);
-        this.frequencia = frequencia;
-        this.mensalidade = mensalidade;
+        this.mensalidade = 1;
         this.altura = altura;
-        this.status = status;
+        this.status = true;
         this.posicao = posicao;
     }
 

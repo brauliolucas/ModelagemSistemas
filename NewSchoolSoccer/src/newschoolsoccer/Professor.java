@@ -10,16 +10,22 @@ import java.util.Scanner;
 
 /**
  *
- * @author ice
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class Professor extends Pessoa {
 
 
     private float salario; 
 
-    public Professor(String nome, Date nascimento, String endereco, String telefone) {
+    public Professor(float salario, String nome, Date nascimento, String endereco, String telefone) {
         super(nome, nascimento, endereco, telefone);
+        this.salario = salario;
     }
+
+    
 
     public void controlePresenca(Aluno alunos[]) {
 

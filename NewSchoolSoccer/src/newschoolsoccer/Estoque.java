@@ -9,7 +9,10 @@ import java.util.List;
 
 /**
  *
- * @author Braulio
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class Estoque {
 
