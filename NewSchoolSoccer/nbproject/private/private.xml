@@ -3,13 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/InterfacesGraficas/FrameIncluirProfessor.java</file>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/newschoolsoccer/Aluno.java</file>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/InterfacesGraficas/FrameIncluirAluno.java</file>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/InterfacesGraficas/FrameFormulario.java</file>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/newschoolsoccer/Professor.java</file>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/InterfacesGraficas/LoginInvalido.java</file>
-            <file>file:/C:/Users/John/Documents/NetBeansProjects/ModelagemSistemas-master/NewSchoolSoccer/src/InterfacesGraficas/JanelaComAbas.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/NewSchoolSoccer.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Transacao.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Item.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Escalacao.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Estoque.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Pessoa.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Usuario.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Aluno.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/Professor.java</file>
+            <file>file:/C:/Users/Valgas/Desktop/UFJF/2019-1/Modelagem%20Sistemas/NewSchoolSoccer/src/newschoolsoccer/FluxoCaixa.java</file>
         </group>
     </open-files>
 </project-private>

@@ -5,14 +5,8 @@
  */
 package InterfacesGraficas;
 
-import ClassesHelper.MailSender;
-import java.awt.Color;
 import java.awt.Window;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.mail.MessagingException;
 import javax.swing.JFrame;
-import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -37,54 +31,15 @@ public class LoginInvalido extends javax.swing.JPanel {
     private void initComponents() {
 
         escudo = new javax.swing.JLabel();
-        campoEmail = new javax.swing.JTextField();
-        textoEmail = new javax.swing.JLabel();
-        botaoSenha = new javax.swing.JButton();
-        mensagemEmailNovaSenha = new javax.swing.JLabel();
-        esqueciSenha = new javax.swing.JLabel();
         campoLogin = new javax.swing.JTextField();
-        textoLogin = new javax.swing.JLabel();
+        texttoLogin = new javax.swing.JLabel();
+        botaoSenha = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        esqueciSenha = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(94, 109, 252));
 
         escudo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/InterfacesGraficas/Escudo.png"))); // NOI18N
-
-        campoEmail.setMinimumSize(new java.awt.Dimension(6, 25));
-        campoEmail.setName(""); // NOI18N
-        campoEmail.setPreferredSize(new java.awt.Dimension(6, 25));
-        campoEmail.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                campoEmailFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                campoEmailFocusLost(evt);
-            }
-        });
-
-        textoEmail.setFont(new java.awt.Font("Calibri", 0, 25)); // NOI18N
-        textoEmail.setForeground(new java.awt.Color(255, 255, 255));
-        textoEmail.setText("E-mail:");
-
-        botaoSenha.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        botaoSenha.setText("Enviar");
-        botaoSenha.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoSenhaActionPerformed(evt);
-            }
-        });
-
-        mensagemEmailNovaSenha.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
-        mensagemEmailNovaSenha.setForeground(new java.awt.Color(94, 109, 252));
-        mensagemEmailNovaSenha.setText("Um e-mail será enviado com a nova senha");
-
-        esqueciSenha.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        esqueciSenha.setForeground(new java.awt.Color(255, 255, 255));
-        esqueciSenha.setText("Login");
-        esqueciSenha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                esqueciSenhaMouseClicked(evt);
-            }
-        });
 
         campoLogin.setMinimumSize(new java.awt.Dimension(6, 25));
         campoLogin.setName(""); // NOI18N
@@ -97,107 +52,92 @@ public class LoginInvalido extends javax.swing.JPanel {
                 campoLoginFocusLost(evt);
             }
         });
-        campoLogin.addActionListener(new java.awt.event.ActionListener() {
+
+        texttoLogin.setFont(new java.awt.Font("Calibri", 0, 25)); // NOI18N
+        texttoLogin.setForeground(new java.awt.Color(255, 255, 255));
+        texttoLogin.setText("E-mail");
+
+        botaoSenha.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        botaoSenha.setText("Enviar");
+        botaoSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                campoLoginActionPerformed(evt);
+                botaoSenhaActionPerformed(evt);
             }
         });
 
-        textoLogin.setFont(new java.awt.Font("Calibri", 0, 25)); // NOI18N
-        textoLogin.setForeground(new java.awt.Color(255, 255, 255));
-        textoLogin.setText("Login:");
+        jLabel1.setFont(new java.awt.Font("Calibri", 1, 22)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Um e-mail será enviado com a nova senha");
+
+        esqueciSenha.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        esqueciSenha.setForeground(new java.awt.Color(255, 255, 255));
+        esqueciSenha.setText("Login");
+        esqueciSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                esqueciSenhaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(129, Short.MAX_VALUE)
+                .addContainerGap(136, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(botaoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(229, 229, 229))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(mensagemEmailNovaSenha)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(textoEmail)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(textoLogin)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(144, 144, 144))))
+                    .addComponent(jLabel1)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(escudo)
+                            .addGap(176, 176, 176))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(texttoLogin)
+                            .addGap(18, 18, 18)
+                            .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(198, 198, 198))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(botaoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(229, 229, 229)))))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(167, 167, 167)
-                        .addComponent(escudo))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(303, 303, 303)
-                        .addComponent(esqueciSenha)))
+                .addGap(308, 308, 308)
+                .addComponent(esqueciSenha)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(escudo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(texttoLogin)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(campoEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textoEmail)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(textoLogin)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(20, 20, 20)
-                .addComponent(botaoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3)
+                        .addComponent(campoLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(mensagemEmailNovaSenha)
+                .addComponent(botaoSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(esqueciSenha)
                 .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void campoEmailFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoEmailFocusGained
-        if(campoEmail.getText() != "")
-        {
-            campoEmail.setText("");
-            campoEmail.setForeground(new Color(0, 0, 0));
-        }
+    private void campoLoginFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusGained
+        
 
-    }//GEN-LAST:event_campoEmailFocusGained
+    }//GEN-LAST:event_campoLoginFocusGained
 
-    private void campoEmailFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoEmailFocusLost
-        if(campoEmail.getText().length() == 0)
+    private void campoLoginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusLost
+        if(campoLogin.getText().length() == 0)
         {
-            campoEmail.setEditable(true);
-            campoEmail.setForeground(new Color(150, 150, 150));
-            campoEmail.setText("Digite o seu e-mail");
+
         }
-    }//GEN-LAST:event_campoEmailFocusLost
+    }//GEN-LAST:event_campoLoginFocusLost
 
     private void botaoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSenhaActionPerformed
-        /*se o e-mail for o mesmo do login digitado*/
-        mensagemEmailNovaSenha.setForeground(new Color(255,255,255));
-        try{
-            
-            MailSender.enviaEmailSimples("Caro usuario "+campoLogin.getText()+"\n"+
-            "Sua nova senha é 123. Uma nova senha será solicitada no próximo acesso.","Troca de senha",campoEmail.getText());
-        } catch(EmailException ex){
-            System.out.println("Erro no envio do e-mail! "+ex.getMessage());
-        } catch (MessagingException ex) {
-            Logger.getLogger(LoginInvalido.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+
     }//GEN-LAST:event_botaoSenhaActionPerformed
 
     private void esqueciSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_esqueciSenhaMouseClicked
@@ -206,27 +146,13 @@ public class LoginInvalido extends javax.swing.JPanel {
         novo.setVisible(true);
     }//GEN-LAST:event_esqueciSenhaMouseClicked
 
-    private void campoLoginFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoLoginFocusGained
-
-    private void campoLoginFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoLoginFocusLost
-
-    private void campoLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoLoginActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_campoLoginActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoSenha;
-    private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoLogin;
     private javax.swing.JLabel escudo;
     private javax.swing.JLabel esqueciSenha;
-    private javax.swing.JLabel mensagemEmailNovaSenha;
-    private javax.swing.JLabel textoEmail;
-    private javax.swing.JLabel textoLogin;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel texttoLogin;
     // End of variables declaration//GEN-END:variables
 }
