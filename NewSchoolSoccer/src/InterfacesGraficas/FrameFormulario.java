@@ -5,15 +5,18 @@
  */
 package InterfacesGraficas;
 
+import ClassesHelper.Controller;
+import ClassesHelper.Util;
 import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import newschoolsoccer.Item;
 
 /**
  *
- * @author John
+ * @author Antônio Henrique Passamai Penizollo  
+ * @author Braulio Silva Mendes Lucas  
+ * @author João Victor Dutra Balboa  
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class FrameFormulario extends javax.swing.JFrame {
     
@@ -150,16 +153,16 @@ public class FrameFormulario extends javax.swing.JFrame {
         }else{
             try
         {
-            // the String to int conversion happens here
-            int quantidade = Integer.parseInt(campoPreco.getText());
-
-            // print out the value after the conversion
-            System.out.println("int i = " + quantidade);
+            
+            float preco = Float.parseFloat(campoPreco.getText());
+            Item material = new Item(campoNome.getText(),0,0);
+            Controller.itens.add(material);
+            Util.SaveDatabase("materiais.bin", Controller.itens);
             JanelaComAbas.getInstance().setEnabled(true);
-            Object[] linha = new Object[4];
-            linha[1] = campoNome.getText();
+            Object[] linha = new Object[3];
+            linha[0] = material.getNome();
+            linha[1] = 0;
             linha[2] = 0;
-            linha[3] = 0;
             JanelaComAbas.getInstance().atualizarTabela(linha);
             JanelaComAbas.getInstance().setEnabled(true);
             this.dispose();

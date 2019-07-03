@@ -5,8 +5,14 @@
  */
 package InterfacesGraficas;
 
+import ClassesHelper.Controller;
 import java.awt.Color;
+import java.util.Calendar;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 import java.util.Date;
+import javax.swing.JFrame;
 import newschoolsoccer.Aluno;
 
 /**
@@ -23,52 +29,77 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
     Date nascimento;
     String telefone;
     float altura;
-    int mensalidade;
     String posicao;
     
     public FrameIncluirAluno() {
         initComponents();
         setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
     }
     
     public boolean verificacao(){
+        String textoErro = "Favor digitar um valor válido";
+        try
+            {
+        int diaAtual = Calendar.getInstance().get(DAY_OF_MONTH);
+        int mesAtual = Calendar.getInstance().get(MONTH);
+        int anoAtual = Calendar.getInstance().get(YEAR);
+        Date dataAtual = new Date(anoAtual, mesAtual,diaAtual);
+        nome = campoNome.getText();
+        
+        posicao = campoPosicao.getText();
+        System.out.println(posicao);
+        int dia = Integer.parseInt(campoDia.getText());
+        int mes = Integer.parseInt(campoMes.getText());
+        int ano = Integer.parseInt(campoAno.getText());
+        System.out.println(ano+" "+anoAtual);
+        
+        altura = Float.parseFloat(campoAltura.getText());
+        endereco = campoEndereco.getText();
+        telefone = campoTelefone.getText();
+        nascimento = new Date(ano, mes, dia);
+        System.out.println(nascimento.compareTo(dataAtual));
+        
+
+        
+        if((dia < 1) || (dia >31) || (mes < 1) || (mes > 12) || (nascimento.compareTo(dataAtual)) >=0 )
+        {
+            textoCampoInvalido.setText("Data invalida!");
+            textoCampoInvalido.setForeground(Color.black);
+            return false;
+        }
+            
+        
+        if((anoAtual - ano) > 20){
+            textoCampoInvalido.setText("Idade ultrapassa o permitido (20 anos)");
+            textoCampoInvalido.setForeground(Color.black);
+            return false;
+        }
+        }
+            catch (NumberFormatException nfe)
+            {
+                textoCampoInvalido.setForeground(Color.black);
+                textoCampoInvalido.setText(textoErro);
+                return false;
+            }
         if("".equals(campoNome.getText()) || "".equals(campoEndereco.getText())
             || "".equals(campoTelefone.getText()) || "".equals(campoPosicao.getText()))
         {
             textoCampoInvalido.setForeground(Color.black);
             textoCampoInvalido.setText("Campo em branco!");
             return false;
-        }else{
-            try
-            {
-                nome = campoNome.getText();
-                posicao = campoPosicao.getText();
-                int dia = Integer.parseInt(campoDia.getText());
-                int mes = Integer.parseInt(campoMes.getText());
-                int ano = Integer.parseInt(campoMes.getText());
-                altura = Float.parseFloat(campoAltura.getText());
-                mensalidade = Integer.parseInt(campoMensalidade.getText());
+            
+         
+        }
+
                 
-                if((dia < 1) || (dia >31) || (mes < 1) || (mes > 12) || (ano < 1950) || (ano > 2100))
-                {
-                    throw new NumberFormatException();
-                }
-                endereco = campoEndereco.getText();
-                telefone = campoTelefone.getText();
-                nascimento = new Date(dia, mes, ano);
                 
 
                 
                 
-            }
-            catch (NumberFormatException nfe)
-            {
-                textoCampoInvalido.setForeground(Color.black);
-                textoCampoInvalido.setText("Favor digitar um valor válido");
-                return false;
-            }
-        }
+            
+    
         
         
         return true;
@@ -98,8 +129,6 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
         campoMes = new javax.swing.JTextField();
         textoAltura = new javax.swing.JLabel();
         campoAltura = new javax.swing.JTextField();
-        textoMensalidade = new javax.swing.JLabel();
-        campoMensalidade = new javax.swing.JTextField();
         textoPosicao = new javax.swing.JLabel();
         campoPosicao = new javax.swing.JTextField();
 
@@ -107,6 +136,14 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
         setTitle("Criar Aluno");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         textoNome.setText("Nome:");
 
@@ -143,8 +180,6 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
 
         textoAltura.setText("Altura (cm):");
 
-        textoMensalidade.setText("Mensalidade:");
-
         textoPosicao.setText("Posição:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -153,16 +188,18 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(194, 194, 194)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(botaoConfirmar)
-                        .addGap(55, 55, 55)
-                        .addComponent(botaoCancelar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textoCampoInvalido)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(botaoConfirmar)
+                            .addGap(55, 55, 55)
+                            .addComponent(botaoCancelar))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(textoPosicao)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(campoPosicao))
+                            .addComponent(campoPosicao)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(textoAltura)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -187,14 +224,8 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(campoMes, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(campoAno))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(textoMensalidade)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(campoMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(textoCampoInvalido)
-                .addContainerGap())
+                            .addComponent(campoAno))))
+                .addGap(0, 232, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,21 +254,17 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textoAltura)
                     .addComponent(campoAltura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textoMensalidade)
-                    .addComponent(campoMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textoPosicao)
                     .addComponent(campoPosicao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(textoCampoInvalido, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(botaoConfirmar)
-                        .addComponent(botaoCancelar)))
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botaoConfirmar)
+                    .addComponent(botaoCancelar))
+                .addGap(18, 18, 18)
+                .addComponent(textoCampoInvalido)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
@@ -250,26 +277,46 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
     private void botaoConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoConfirmarActionPerformed
         
         if(verificacao()){
-    
+        Aluno p = new Aluno(altura,nome,nascimento,endereco,telefone,posicao);
+        switch(p.getCategoria()){
+            case 14:
+                Controller.escalacoes.get(0).alunos.add(p);
+                break;
+            case 17:
+                Controller.escalacoes.get(1).alunos.add(p);
+                break;
+            default:
+                Controller.escalacoes.get(2).alunos.add(p);
+                break;
         }
-        Aluno p = new Aluno(nome,endereco,telefone,nascimento,mensalidade,altura,posicao);
         
         Object[] linha = new Object[5];
         linha[0] = p.getNome();
-        linha[1] = p.getMensalidade();
+        linha[1] = p.getTelefone();
         linha[2] = p.getAltura();
         linha[3] = p.getPosicao();
         linha[4] = p.getCategoria();
-        
-        JanelaComAbas.getInstance().setEnabled(true);
         JanelaComAbas.getInstance().atualizarTabelaAlunos(linha);
+        JanelaComAbas.getInstance().setEnabled(true);
+        
         this.dispose();
+        }
+        
     }//GEN-LAST:event_botaoConfirmarActionPerformed
 
     private void botaoCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCancelarActionPerformed
         JanelaComAbas.getInstance().setEnabled(true);
         this.dispose();
     }//GEN-LAST:event_botaoCancelarActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JanelaComAbas.getInstance().setEnabled(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
@@ -313,7 +360,6 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
     private javax.swing.JTextField campoAno;
     private javax.swing.JTextField campoDia;
     private javax.swing.JTextField campoEndereco;
-    private javax.swing.JTextField campoMensalidade;
     private javax.swing.JTextField campoMes;
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextField campoPosicao;
@@ -321,7 +367,6 @@ public class FrameIncluirAluno extends javax.swing.JFrame {
     private javax.swing.JLabel textoAltura;
     private javax.swing.JLabel textoCampoInvalido;
     private javax.swing.JLabel textoEndereco;
-    private javax.swing.JLabel textoMensalidade;
     private javax.swing.JLabel textoNascimento;
     private javax.swing.JLabel textoNome;
     private javax.swing.JLabel textoNovoMat;

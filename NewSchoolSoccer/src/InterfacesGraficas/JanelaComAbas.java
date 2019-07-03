@@ -5,8 +5,12 @@
  */
 package InterfacesGraficas;
 
+import ClassesHelper.Controller;
+import static ClassesHelper.Controller.escalacoes;
+import static ClassesHelper.Controller.professores;
 import ClassesHelper.CriadorPDF;
 import ClassesHelper.MailSender;
+import ClassesHelper.Util;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
@@ -14,20 +18,22 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import newschoolsoccer.Aluno;
 import newschoolsoccer.Escalacao;
+import newschoolsoccer.FluxoCaixa;
+import newschoolsoccer.Item;
+import newschoolsoccer.Professor;
+import newschoolsoccer.Transacao;
 import org.apache.commons.mail.EmailException;
 
 /**
@@ -39,40 +45,79 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private Object jTable1;
     public JFrame frameForm;
     private static JanelaComAbas instancia;
+    String dataInicio;
+    String dataFinal;
+    String relatorioFinanceiro;
     /**
      * Creates new form JanelaComAbas
      */
-    public JanelaComAbas() {
+    public JanelaComAbas(String login) {
         initComponents();
+        iniciarTabelas();
         getContentPane().setBackground(new Color(94,109,252));
         setResizable(false);
-        int cargo = 3001;
-        if(cargo > 3000)
-        {
-            painelComAbas.remove(2);
-            painelComAbas.remove(2);
-            this.criarMaterialBotao.setVisible(false);
-            this.textoRemocao.setVisible(false);
-            this.removerItemBotao.setVisible(false);
-        }
-        else
-        {
-            painelComAbas.remove(1);
-        }
-        
+        switch(login){
+            case "admin":
+                painelComAbas.remove(1);
+                break;
+            case "professor":
+                painelComAbas.remove(2);
+                painelComAbas.remove(2);
+                this.criarMaterialBotao.setVisible(false);
+                this.textoRemocao.setVisible(false);
+                this.removerItemBotao.setVisible(false);
+                break;
+        }               
         }
     
-    public static JanelaComAbas getInstance(){ // MÉTODO QUE VERIFICA SE A INSTANCIA JÁ ESTÁ CRIADA (SINGLETON)     
+    /**
+     *  cria as tabelas de cada aba, exceto financeiro, que nao precisa ser inicializada
+     */
+    public void iniciarTabelas(){
+        //iniciar tabelaAlunos
+        for(int i = 0; i < Controller.escalacoes.size(); i++){
+            for(int j = 0; j < Controller.escalacoes.get(i).alunos.size(); j++){
+                Object[] linha = new Object[5];
+                linha[0] = Controller.escalacoes.get(i).alunos.get(j).getNome();
+                linha[1] = Controller.escalacoes.get(i).alunos.get(j).getTelefone();
+                linha[2] = Controller.escalacoes.get(i).alunos.get(j).getAltura();
+                linha[3] = Controller.escalacoes.get(i).alunos.get(j).getPosicao();
+                linha[4] = Controller.escalacoes.get(i).alunos.get(j).getCategoria();
+                atualizarTabelaAlunos(linha);
+            }
+        }
+        // iniciarTabelaProfessores
+        
+        for(int i = 0; i < Controller.professores.size(); i++) {
+                Object[] linha = new Object[4];
+                linha[0] = Controller.professores.get(i).getNome();
+                linha[1] = Controller.professores.get(i).getEndereco();
+                linha[2] = Controller.professores.get(i).getSalario();
+                linha[3] = Controller.professores.get(i).getTelefone();    
+                System.out.println(Controller.professores.get(i).getNome()+" "+Controller.professores.get(i).getEndereco()+" "
+                        +Controller.professores.get(i).getSalario()+" "+Controller.professores.get(i).getTelefone());
+                atualizarTabelaProfs(linha);
+        }
+        //iniciar tabelaMateriais
+        for (int i = 0; i < Controller.itens.size() ; i++){
+            Object[] linha = new Object[3];
+            linha[0] = Controller.itens.get(i).getNome();
+            linha[1] = 0;
+            linha[2] = 0;
+            atualizarTabela(linha);
+        }
+        
+    }
+    
+    public static JanelaComAbas getInstance(){ 
                 return instancia;
         }
     
     public void atualizarTabela(Object[] linha){
-        linha[0] = tabelaMateriais.getRowCount() + 1;
         ((DefaultTableModel) tabelaMateriais.getModel()).addRow(linha);
         /*incluir aqui funcao para atualizar o objeto de materiais*/
     }
     public void atualizarTabelaProfs(Object[] linha){
-        linha[0] = tabelaProfessores.getRowCount() + 1;
         ((DefaultTableModel) tabelaProfessores.getModel()).addRow(linha);
         /*incluir aqui funcao para atualizar o objeto de materiais*/
     }
@@ -113,7 +158,6 @@ public class JanelaComAbas extends javax.swing.JFrame {
         botaoEdicao = new javax.swing.JButton();
         textoData3 = new javax.swing.JLabel();
         textoData6 = new javax.swing.JLabel();
-        botaoVisualizacao = new javax.swing.JButton();
         imprimirEscalacao = new javax.swing.JButton();
         nomeEscalacao = new javax.swing.JTextField();
         textoData7 = new javax.swing.JLabel();
@@ -125,20 +169,17 @@ public class JanelaComAbas extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tabelaProfessores = new javax.swing.JTable();
         botaoCriarPerfil = new javax.swing.JButton();
-        botaoVisualizarAlunosDeProf = new javax.swing.JButton();
         botaoApagarPerfil = new javax.swing.JButton();
         abaFinanceiro = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tabelaFinanceira = new javax.swing.JTable();
         textoData1 = new javax.swing.JLabel();
         textoData4 = new javax.swing.JLabel();
         anoInicio1 = new javax.swing.JTextField();
         mesInicio1 = new javax.swing.JTextField();
         mesFim1 = new javax.swing.JTextField();
         anoFim1 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
-        textoData5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        pesquisarFinanceiroBotao = new javax.swing.JButton();
         imprimirRelatorioBotao = new javax.swing.JButton();
         abaMateriais = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -200,14 +241,14 @@ public class JanelaComAbas extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Nome", "Mensalidade", "Altura (cm)", "Posição", "Categoria"
+                "Nome", "Telefone", "Altura (cm)", "Posição", "Escalação"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.String.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true
+                false, true, true, true, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -272,14 +313,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
         textoData6.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
         textoData6.setForeground(new java.awt.Color(255, 255, 255));
         textoData6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        textoData6.setText("visualizar/editar os dados");
-
-        botaoVisualizacao.setText("Visualizar Aluno");
-        botaoVisualizacao.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoVisualizacaoActionPerformed(evt);
-            }
-        });
+        textoData6.setText("apagar/editar os dados");
 
         imprimirEscalacao.setText("Imprimir Escalação");
         imprimirEscalacao.addActionListener(new java.awt.event.ActionListener() {
@@ -328,16 +362,15 @@ public class JanelaComAbas extends javax.swing.JFrame {
         editarAlunoLayout.setHorizontalGroup(
             editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(editarAlunoLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textoData7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(nomeEscalacao)
-                    .addComponent(imprimirEscalacao, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(imprimirEscalacao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botaoEdicao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textoData3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(textoData8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botaoVisualizacao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(editarAlunoLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
                         .addComponent(textoData6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -360,15 +393,12 @@ public class JanelaComAbas extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(textoData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(textoData2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(imprimirAniversariantes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                    .addComponent(imprimirAniversariantes, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(botaoApagarAluno, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         editarAlunoLayout.setVerticalGroup(
             editarAlunoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(editarAlunoLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(editarAlunoLayout.createSequentialGroup()
                 .addComponent(textoData, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(1, 1, 1)
@@ -387,15 +417,13 @@ public class JanelaComAbas extends javax.swing.JFrame {
                 .addComponent(textoData3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(textoData6, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(botaoVisualizacao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botaoEdicao)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(botaoEdicao1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botaoApagarAluno)
-                .addGap(11, 11, 11)
+                .addGap(32, 32, 32)
+                .addComponent(botaoEdicao1)
+                .addGap(18, 18, 18)
                 .addComponent(textoData7, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addComponent(textoData8, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -406,25 +434,33 @@ public class JanelaComAbas extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(erroAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
+            .addGroup(editarAlunoLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         painelComAbas.addTab("Alunos", editarAluno);
 
         abaProfessores.setBackground(new java.awt.Color(153, 153, 255));
+        abaProfessores.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                abaProfessoresFocusGained(evt);
+            }
+        });
 
         tabelaProfessores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "#", "Professor", "Login", "Endereço", "Salário", "Telefone"
+                "Professor", "Endereço", "Salário", "Telefone"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Float.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -439,25 +475,15 @@ public class JanelaComAbas extends javax.swing.JFrame {
         jScrollPane2.setViewportView(tabelaProfessores);
         if (tabelaProfessores.getColumnModel().getColumnCount() > 0) {
             tabelaProfessores.getColumnModel().getColumn(0).setResizable(false);
-            tabelaProfessores.getColumnModel().getColumn(0).setPreferredWidth(5);
             tabelaProfessores.getColumnModel().getColumn(1).setResizable(false);
             tabelaProfessores.getColumnModel().getColumn(2).setResizable(false);
             tabelaProfessores.getColumnModel().getColumn(3).setResizable(false);
-            tabelaProfessores.getColumnModel().getColumn(4).setResizable(false);
-            tabelaProfessores.getColumnModel().getColumn(5).setResizable(false);
         }
 
         botaoCriarPerfil.setText("Criar Novo Perfil");
         botaoCriarPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoCriarPerfilActionPerformed(evt);
-            }
-        });
-
-        botaoVisualizarAlunosDeProf.setText("Visualizar Alunos");
-        botaoVisualizarAlunosDeProf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoVisualizarAlunosDeProfActionPerformed(evt);
             }
         });
 
@@ -472,15 +498,13 @@ public class JanelaComAbas extends javax.swing.JFrame {
         abaProfessores.setLayout(abaProfessoresLayout);
         abaProfessoresLayout.setHorizontalGroup(
             abaProfessoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
             .addGroup(abaProfessoresLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(botaoCriarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(botaoApagarPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addComponent(botaoVisualizarAlunosDeProf, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                .addGap(46, 46, 46))
         );
         abaProfessoresLayout.setVerticalGroup(
             abaProfessoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,7 +512,6 @@ public class JanelaComAbas extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addGroup(abaProfessoresLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botaoCriarPerfil)
-                    .addComponent(botaoVisualizarAlunosDeProf)
                     .addComponent(botaoApagarPerfil))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
@@ -498,29 +521,37 @@ public class JanelaComAbas extends javax.swing.JFrame {
 
         abaFinanceiro.setBackground(new java.awt.Color(153, 153, 255));
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaFinanceira.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mês", "Valor"
+                "Data", "Valor", "Tipo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class
+                java.lang.String.class, java.lang.Double.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jTable4.setColumnSelectionAllowed(true);
-        jTable4.getTableHeader().setReorderingAllowed(false);
-        jScrollPane4.setViewportView(jTable4);
-        jTable4.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(0).setResizable(false);
-            jTable4.getColumnModel().getColumn(1).setResizable(false);
+        tabelaFinanceira.setColumnSelectionAllowed(true);
+        tabelaFinanceira.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(tabelaFinanceira);
+        tabelaFinanceira.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (tabelaFinanceira.getColumnModel().getColumnCount() > 0) {
+            tabelaFinanceira.getColumnModel().getColumn(0).setResizable(false);
+            tabelaFinanceira.getColumnModel().getColumn(1).setResizable(false);
+            tabelaFinanceira.getColumnModel().getColumn(2).setResizable(false);
         }
 
         textoData1.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
@@ -545,12 +576,12 @@ public class JanelaComAbas extends javax.swing.JFrame {
             }
         });
 
-        textoData5.setFont(new java.awt.Font("Calibri", 1, 13)); // NOI18N
-        textoData5.setForeground(new java.awt.Color(255, 255, 255));
-        textoData5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        textoData5.setText("Total para o período especificado:");
-
-        jButton1.setText("Pesquisar");
+        pesquisarFinanceiroBotao.setText("Pesquisar");
+        pesquisarFinanceiroBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarFinanceiroBotaoActionPerformed(evt);
+            }
+        });
 
         imprimirRelatorioBotao.setText("Imprimir relatório");
         imprimirRelatorioBotao.addActionListener(new java.awt.event.ActionListener() {
@@ -564,12 +595,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
         abaFinanceiroLayout.setHorizontalGroup(
             abaFinanceiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaFinanceiroLayout.createSequentialGroup()
-                .addGroup(abaFinanceiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(abaFinanceiroLayout.createSequentialGroup()
-                        .addComponent(textoData5, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(abaFinanceiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(abaFinanceiroLayout.createSequentialGroup()
                         .addGap(65, 65, 65)
@@ -585,9 +611,9 @@ public class JanelaComAbas extends javax.swing.JFrame {
                         .addGroup(abaFinanceiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(textoData1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                             .addComponent(textoData4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pesquisarFinanceiroBotao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(imprimirRelatorioBotao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(0, 43, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         abaFinanceiroLayout.setVerticalGroup(
             abaFinanceiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -605,17 +631,11 @@ public class JanelaComAbas extends javax.swing.JFrame {
                     .addComponent(mesFim1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(anoFim1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(pesquisarFinanceiroBotao)
                 .addGap(29, 29, 29)
                 .addComponent(imprimirRelatorioBotao)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(abaFinanceiroLayout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addGroup(abaFinanceiroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textoData5, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                .addContainerGap(230, Short.MAX_VALUE))
+            .addComponent(jScrollPane4)
         );
 
         painelComAbas.addTab("Financeiro", abaFinanceiro);
@@ -624,20 +644,17 @@ public class JanelaComAbas extends javax.swing.JFrame {
 
         tabelaMateriais.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Integer(1), "Bola",  new Integer(50),  new Integer(0)},
-                { new Integer(2), "Cone",  new Integer(60),  new Integer(0)},
-                { new Integer(3), "Colete",  new Integer(300),  new Integer(0)},
-                { new Integer(4), "Uniforme",  new Integer(300),  new Integer(0)}
+
             },
             new String [] {
-                "#", "Material", "Quantidade", "Solicitar novo"
+                "Material", "Quantidade", "Solicitar novo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true
+                false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -654,7 +671,6 @@ public class JanelaComAbas extends javax.swing.JFrame {
             tabelaMateriais.getColumnModel().getColumn(0).setResizable(false);
             tabelaMateriais.getColumnModel().getColumn(1).setResizable(false);
             tabelaMateriais.getColumnModel().getColumn(2).setResizable(false);
-            tabelaMateriais.getColumnModel().getColumn(3).setResizable(false);
         }
 
         botaoSolicitarMaterial.setText("Solicitar mais materiais");
@@ -721,68 +737,64 @@ public class JanelaComAbas extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(abaMateriaisLayout.createSequentialGroup()
-                        .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(abaMateriaisLayout.createSequentialGroup()
-                                .addGap(36, 36, 36)
-                                .addComponent(removerItemBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(abaMateriaisLayout.createSequentialGroup()
-                                .addGap(37, 37, 37)
-                                .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(botaoSolicitarMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(criarMaterialBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(36, 36, 36)
+                        .addComponent(removerItemBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(abaMateriaisLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(37, 37, 37)
                         .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botaoSolicitarMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(criarMaterialBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(abaMateriaisLayout.createSequentialGroup()
+                .addGap(457, 457, 457)
+                .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(abaMateriaisLayout.createSequentialGroup()
+                        .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textoData12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(textoData13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaMateriaisLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(textoRemocao, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(abaMateriaisLayout.createSequentialGroup()
-                                .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(textoData12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(textoData13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaMateriaisLayout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(textoRemocao, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(abaMateriaisLayout.createSequentialGroup()
-                                        .addGap(21, 21, 21)
-                                        .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(textoData9, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(abaMateriaisLayout.createSequentialGroup()
-                                                    .addGap(10, 10, 10)
-                                                    .addComponent(textoData11))
-                                                .addComponent(textoData10)))
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())
-                            .addGroup(abaMateriaisLayout.createSequentialGroup()
-                                .addComponent(textoData14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(29, 29, 29))))))
+                                .addGap(21, 21, 21)
+                                .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(textoData9, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(abaMateriaisLayout.createSequentialGroup()
+                                            .addGap(10, 10, 10)
+                                            .addComponent(textoData11))
+                                        .addComponent(textoData10)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(abaMateriaisLayout.createSequentialGroup()
+                        .addComponent(textoData14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(29, 29, 29))))
         );
         abaMateriaisLayout.setVerticalGroup(
             abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(abaMateriaisLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(abaMateriaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, abaMateriaisLayout.createSequentialGroup()
-                        .addComponent(textoData9, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoData10, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoData11, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoData12, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoData13, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textoData14, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(botaoSolicitarMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(59, 59, 59)
-                        .addComponent(criarMaterialBotao)
-                        .addGap(32, 32, 32)
-                        .addComponent(textoRemocao, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(removerItemBotao))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(58, 58, 58)
+                .addComponent(textoData9, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoData10, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoData11, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoData12, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoData13, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(textoData14, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(botaoSolicitarMaterial, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59)
+                .addComponent(criarMaterialBotao)
+                .addGap(32, 32, 32)
+                .addComponent(textoRemocao, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removerItemBotao)
                 .addGap(0, 13, Short.MAX_VALUE))
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         painelComAbas.addTab("Materiais", abaMateriais);
@@ -813,15 +825,55 @@ public class JanelaComAbas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_anoInicioActionPerformed
 
+    private String criarStringAniversariantes(Date data1, Date data2){
+        String aniversariantes = "";
+        
+        for(int i = 0; i < Controller.escalacoes.size(); i++){
+            for(int j = 0; j < Controller.escalacoes.get(i).alunos.size(); j++){
+                // Controller.escalacoes.get(i).alunos.get(j)
+                if(data1.compareTo(Controller.escalacoes.get(i).alunos.get(j).getNascimento()) <= 0
+                   && data2.compareTo(Controller.escalacoes.get(i).alunos.get(j).getNascimento()) >= 0){
+                   String nascimento = Controller.escalacoes.get(i).alunos.get(j).getNascimento().getDay()+"/"+
+                           Controller.escalacoes.get(i).alunos.get(j).getNascimento().getMonth()+"/"+
+                           Controller.escalacoes.get(i).alunos.get(j).getNascimento().getYear();
+                   aniversariantes+= Controller.escalacoes.get(i).alunos.get(j).getNome()+": "+
+                           nascimento; 
+                }
+                
+            }
+            
+        }
+        
+        return aniversariantes;
+    }
+    
     private void imprimirAniversariantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirAniversariantesActionPerformed
         
         Document arquivoPDF = new Document();
         try {
-            PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Aniversariantes.pdf"));
-            arquivoPDF.open();
+            int ano1 = Integer.parseInt(anoInicio.getText());
+            int ano2 = Integer.parseInt(anoFim.getText());
+            int mes1 = Integer.parseInt(mesInicio.getText());
+            int mes2 = Integer.parseInt(mesFim.getText());
+            Date dataInicio = new Date(ano1,mes1,1);
+            Date dataFim = new Date(ano2,mes2,1);
+            System.out.println(dataInicio.compareTo(dataFim));
+            if(dataInicio.compareTo(dataFim) > 0){
+                JOptionPane.showMessageDialog(null, "Data inválida!");
+            }else{
+                String aniversariantes = criarStringAniversariantes(dataInicio,dataFim);
+                PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Aniversariantes.pdf"));
+                arquivoPDF.open();
+                
+                arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
+                arquivoPDF.add(new Paragraph("Lista de Aniversariantes: \n\n"+aniversariantes));
+                try {
+                    Desktop.getDesktop().open(new File("Aniversariantes.pdf"));
+                } catch (IOException ex) {
+                    System.out.println("Erro! "+ex);
+                }
+            }
             
-            arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
-            arquivoPDF.add(new Paragraph("Lista de Aniversariantes"));
             
 
         } catch (DocumentException | FileNotFoundException ex) {
@@ -832,11 +884,7 @@ public class JanelaComAbas extends javax.swing.JFrame {
             arquivoPDF.close();
         }
         
-        try {
-            Desktop.getDesktop().open(new File("Aniversariantes.pdf"));
-        } catch (IOException ex) {
-            System.out.println("Erro! "+ex);
-        }
+        
     }//GEN-LAST:event_imprimirAniversariantesActionPerformed
 
     private void mesInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesInicio1ActionPerformed
@@ -861,11 +909,11 @@ public class JanelaComAbas extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoSolicitarMaterialActionPerformed
 
     private void imprimirEscalacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirEscalacaoActionPerformed
-        String texto = "Escalação Sub-"+nomeEscalacao.getText()+"\n\n";
+        String texto = "Escalação "+nomeEscalacao.getText()+"\n\n";
         int alunos = 0;
-        int intEscalacao = Integer.parseInt(nomeEscalacao.getText());
+        String escalacao = nomeEscalacao.getText();
         for(int i = 0; i < tabelaAlunos.getModel().getRowCount(); i++){
-            if((int) tabelaAlunos.getValueAt(i, 4) == intEscalacao)
+            if(tabelaAlunos.getValueAt(i, 4).equals(escalacao))
             {
                 texto+="\nNome: "+tabelaAlunos.getValueAt(i, 0)+
                         "\nPosição: "+tabelaAlunos.getValueAt(i, 3);
@@ -890,55 +938,40 @@ public class JanelaComAbas extends javax.swing.JFrame {
     }//GEN-LAST:event_nomeEscalacaoActionPerformed
 
     private void imprimirRelatorioBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imprimirRelatorioBotaoActionPerformed
-        Document arquivoPDF = new Document();
-        try {
-            PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Aniversariantes.pdf"));
-            arquivoPDF.open();
-            
-            arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
-            arquivoPDF.add(new Paragraph("Relatório Financeiro \nPeríodo: "+mesInicio1.getText()+"/"+anoInicio1.getText()
-            +" a "+mesFim1.getText()+"/"+anoInicio1.getText()));
-            
+        if(tabelaFinanceira.getRowCount() != -1){
+            Document arquivoPDF = new Document();
+        
+            try {
+                
+                
+                PdfWriter.getInstance(arquivoPDF, new FileOutputStream("Relatório Financeiro.pdf"));
+                arquivoPDF.open();
+                
+                arquivoPDF.add(Image.getInstance(String.format("src/InterfacesGraficas/EscudoMenor.png")));
+                arquivoPDF.add(new Paragraph("Relatório Financeiro \nPeríodo: "+dataInicio+" a "+dataFinal+"\n\n"+relatorioFinanceiro));
 
-        } catch (DocumentException | FileNotFoundException ex) {
-            System.out.println("Erro! "+ex);
-        } catch (IOException ex) {
-            System.out.println("Erro! "+ex);
-        } finally {
-            arquivoPDF.close();
+
+            } catch (DocumentException | FileNotFoundException ex) {
+                System.out.println("Erro! "+ex);
+            } catch (IOException ex) {
+                System.out.println("Erro! "+ex);
+            } finally {
+                arquivoPDF.close();
+            }
+
+            try {
+                Desktop.getDesktop().open(new File("Relatório Financeiro.pdf"));
+            } catch (IOException ex) {
+                System.out.println("Erro! Não localizado arquivo "+ex);
+            }
         }
         
-        try {
-            Desktop.getDesktop().open(new File("Aniversariantes.pdf"));
-        } catch (IOException ex) {
-            System.out.println("Erro! "+ex);
-        }
+        
     }//GEN-LAST:event_imprimirRelatorioBotaoActionPerformed
 
     private void anoInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anoInicio1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_anoInicio1ActionPerformed
-
-    private void botaoVisualizacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVisualizacaoActionPerformed
-        int i = tabelaAlunos.getSelectedRow();
-        if(i != -1)
-        {
-            ArrayList<Aluno> alunos = new ArrayList();
-
-            String atividade = !alunos.get(i).isStatus() ? "Inativo" : "Ativo";
-            String texto = "Aluno "+alunos.get(i).getNome()+
-                "\nProfessor: professor.getNome()"+
-                "\nCategoria: "+alunos.get(i).getCategoria()+
-                "\nAltura: "+alunos.get(i).getAltura()+
-                "\nStatus: "+atividade+
-                "\nMensalidade: "+alunos.get(i).getMensalidade()+
-                "\nData de nascimento: "+alunos.get(i).getNascimento()+
-                "\n";
-        
-        }
-
-        
-    }//GEN-LAST:event_botaoVisualizacaoActionPerformed
 
     private void botaoEdicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEdicaoActionPerformed
         
@@ -974,13 +1007,10 @@ public class JanelaComAbas extends javax.swing.JFrame {
     }//GEN-LAST:event_criarMaterialBotaoActionPerformed
 
     private void removerItemBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerItemBotaoActionPerformed
-        int id = (int) tabelaMateriais.getValueAt(tabelaMateriais.getSelectedRow(),0);
+        Controller.itens.remove(tabelaMateriais.getSelectedRow());
+        Util.SaveDatabase("materiais.bin", Controller.itens);
         ((DefaultTableModel) tabelaMateriais.getModel()).removeRow(tabelaMateriais.getSelectedRow());
     }//GEN-LAST:event_removerItemBotaoActionPerformed
-
-    private void botaoVisualizarAlunosDeProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoVisualizarAlunosDeProfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_botaoVisualizarAlunosDeProfActionPerformed
 
     private void botaoCriarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCriarPerfilActionPerformed
         this.setEnabled(false);
@@ -990,7 +1020,8 @@ public class JanelaComAbas extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoCriarPerfilActionPerformed
 
     private void botaoApagarPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoApagarPerfilActionPerformed
-        int id = tabelaProfessores.getSelectedRow();
+        Controller.professores.remove(tabelaProfessores.getSelectedRow());
+        Util.SaveDatabase("professores.bin", Controller.professores);
         ((DefaultTableModel) tabelaProfessores.getModel()).removeRow(tabelaProfessores.getSelectedRow());
     }//GEN-LAST:event_botaoApagarPerfilActionPerformed
 
@@ -1002,9 +1033,62 @@ public class JanelaComAbas extends javax.swing.JFrame {
     }//GEN-LAST:event_botaoEdicao1ActionPerformed
 
     private void botaoApagarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoApagarAlunoActionPerformed
-        int id = tabelaAlunos.getSelectedRow();
+        int z = (int) tabelaAlunos.getValueAt(tabelaAlunos.getSelectedRow(), 4);
+
+        switch(z){
+            case 14:
+                z = 0;
+                break;
+            case 17:
+                z = 1;
+                break;
+            default:
+                z = 2;
+                break;
+        }
+        Controller.escalacoes.get(z).alunos.remove(tabelaAlunos.getSelectedRow());
+        Util.SaveDatabase("escalacoes.bin", Controller.escalacoes);
         ((DefaultTableModel) tabelaAlunos.getModel()).removeRow(tabelaAlunos.getSelectedRow());
     }//GEN-LAST:event_botaoApagarAlunoActionPerformed
+
+    private void pesquisarFinanceiroBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarFinanceiroBotaoActionPerformed
+        try{
+            int ano1 = Integer.parseInt(anoInicio1.getText());
+            int ano2 = Integer.parseInt(anoFim1.getText());
+            int mes1 = Integer.parseInt(mesInicio1.getText());
+            int mes2 = Integer.parseInt(mesFim1.getText());
+            Date data1 = new Date(1,mes1,ano1);
+            Date data2 = new Date(1,mes2+1,ano2);
+            if(data1.compareTo(data2) > 0){
+                JOptionPane.showMessageDialog(null, "Data inválida!");
+            } else{
+                dataInicio = mes1+"/"+ano1;
+                dataFinal = mes1+"/"+ano1;
+                FluxoCaixa fluxo = new FluxoCaixa();
+
+                ArrayList<Transacao> listaTransacoes = fluxo.getPeriodo(data1, data2);
+                relatorioFinanceiro = fluxo.gerarRelatorio(data1, data2);
+                montarTabelaFinanceira(listaTransacoes);
+            }
+        } catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Data inválida!");
+        }
+        
+    }//GEN-LAST:event_pesquisarFinanceiroBotaoActionPerformed
+
+    private void abaProfessoresFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_abaProfessoresFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_abaProfessoresFocusGained
+    
+    public void montarTabelaFinanceira(ArrayList<Transacao> transacoes){
+        for(Transacao obj : transacoes){
+            Object[] linha = new Object[3];
+            linha[0] = obj.getData();
+            linha[1] = obj.getValor();
+            linha[2] = obj.getTipo() == 0 ? "Crédito" : "Débito";
+            ((DefaultTableModel) tabelaFinanceira.getModel()).addRow(linha);
+        }
+    }
     
     
     /**
@@ -1037,7 +1121,6 @@ public class JanelaComAbas extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JanelaComAbas().setVisible(true);
                 
             }
         });
@@ -1050,25 +1133,22 @@ public class JanelaComAbas extends javax.swing.JFrame {
         
         for(int i = 0; i < tabelaMateriais.getRowCount() ; i++)
         {
-            Object obj = tabelaMateriais.getValueAt(i,3);
+            Object obj = tabelaMateriais.getValueAt(i,2);
             if(obj!=null){
                 int addMaterial = (int) obj;
                 
                 if(addMaterial > 0)
                 {
-                    texto+= (String) tabelaMateriais.getValueAt(i,1)+": "+addMaterial+"\n";
-                    
+                    texto+= (String) tabelaMateriais.getValueAt(i,0)+": "+addMaterial+"\n";
                 }
                 
-                int novoValor = (int) tabelaMateriais.getValueAt(i, 2) + addMaterial;
+                int novoValor = (int) tabelaMateriais.getValueAt(i, 1) + addMaterial;
                 System.out.println(addMaterial);
                 if(novoValor >= 0)
                 {
-                    tabelaMateriais.setValueAt((Object) novoValor, i, 2);
+                    tabelaMateriais.setValueAt((Object) novoValor, i, 1);
                 }
-                
             }
-            
         }
         
         return texto;
@@ -1092,8 +1172,6 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JButton botaoEdicao;
     private javax.swing.JButton botaoEdicao1;
     private javax.swing.JButton botaoSolicitarMaterial;
-    private javax.swing.JButton botaoVisualizacao;
-    private javax.swing.JButton botaoVisualizarAlunosDeProf;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel campoAzulTranslucido;
@@ -1105,13 +1183,10 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JButton imprimirAniversariantes;
     private javax.swing.JButton imprimirEscalacao;
     private javax.swing.JButton imprimirRelatorioBotao;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField mesFim;
     private javax.swing.JTextField mesFim1;
     private javax.swing.JTextField mesInicio;
@@ -1119,8 +1194,10 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JTextField nomeDaEscola;
     private javax.swing.JTextField nomeEscalacao;
     private javax.swing.JTabbedPane painelComAbas;
+    private javax.swing.JButton pesquisarFinanceiroBotao;
     private javax.swing.JButton removerItemBotao;
     private javax.swing.JTable tabelaAlunos;
+    private javax.swing.JTable tabelaFinanceira;
     private javax.swing.JTable tabelaMateriais;
     private javax.swing.JTable tabelaProfessores;
     private javax.swing.JLabel textoData;
@@ -1133,7 +1210,6 @@ public class JanelaComAbas extends javax.swing.JFrame {
     private javax.swing.JLabel textoData2;
     private javax.swing.JLabel textoData3;
     private javax.swing.JLabel textoData4;
-    private javax.swing.JLabel textoData5;
     private javax.swing.JLabel textoData6;
     private javax.swing.JLabel textoData7;
     private javax.swing.JLabel textoData8;

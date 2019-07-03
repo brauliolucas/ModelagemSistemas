@@ -5,18 +5,26 @@
  */
 package newschoolsoccer;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  *
- * @author Braulio
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
-public class Escalacao {
+public class Escalacao implements Serializable{
     
     private int categoria;
-    private List<Aluno> alunos;
+    public ArrayList<Aluno> alunos;
     
+    public Escalacao(int categoria){
+        this.categoria = categoria;
+        alunos = new ArrayList();
+    }
     
     
     public void mostrarEscalacao(){

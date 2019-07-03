@@ -5,11 +5,16 @@
  */
 package newschoolsoccer;
 
+import java.io.Serializable;
+
 /**
  *
- * @author Valgas
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
-public class Item {
+public class Item implements Serializable{
     
     private String nome;
     private int quantidade;
@@ -18,11 +23,10 @@ public class Item {
 
     
     
-    public Item(String nome, int quantidade, float preco, int id) {
+    public Item(String nome, int quantidade, float preco) {
         this.nome = nome;
         this.quantidade = quantidade;
         this.preco = preco;
-        this.id = id;
     }
 
     

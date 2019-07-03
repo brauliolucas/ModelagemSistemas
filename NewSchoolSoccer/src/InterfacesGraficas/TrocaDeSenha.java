@@ -9,18 +9,25 @@ import java.awt.Color;
 import java.awt.Window;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import newschoolsoccer.Professor;
 
 /**
  *
- * @author John
+ * @author Antônio Henrique Passamai Penizollo  
+ * @author Braulio Silva Mendes Lucas  
+ * @author João Victor Dutra Balboa  
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class TrocaDeSenha extends javax.swing.JPanel {
 
     /**
      * Creates new form TrocaDeSenha
      */
-    public TrocaDeSenha() {
+    
+    private String perfil;
+    public TrocaDeSenha(String perfil) {
         initComponents();
+        this.perfil = perfil;
     }
 
     /**
@@ -117,10 +124,15 @@ public class TrocaDeSenha extends javax.swing.JPanel {
         {
             if(campoSenha1.getText().length() >= 6)
             {
+                if(perfil == "admin"){
+                    Professor.setPwAdemir(campoSenha1.getText());
+                } else {
+                    Professor.setPwProf(campoSenha1.getText());
+                }
                 JOptionPane.showMessageDialog(null, "Senha alterada com sucesso. Realizando Login.");
                 ((Window) getRootPane().getParent()).dispose();
                 
-                JFrame novo = new JanelaComAbas();;
+                JFrame novo = new JanelaComAbas(perfil);;
                 novo.setVisible(true);
             }
             else 

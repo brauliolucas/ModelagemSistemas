@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.swing.JFrame;
+import newschoolsoccer.Professor;
 import org.apache.commons.mail.EmailException;
 
 /**
@@ -41,7 +42,7 @@ public class LoginInvalido extends javax.swing.JPanel {
         textoEmail = new javax.swing.JLabel();
         botaoSenha = new javax.swing.JButton();
         mensagemEmailNovaSenha = new javax.swing.JLabel();
-        esqueciSenha = new javax.swing.JLabel();
+        voltarAoLogin = new javax.swing.JLabel();
         campoLogin = new javax.swing.JTextField();
         textoLogin = new javax.swing.JLabel();
 
@@ -77,12 +78,12 @@ public class LoginInvalido extends javax.swing.JPanel {
         mensagemEmailNovaSenha.setForeground(new java.awt.Color(94, 109, 252));
         mensagemEmailNovaSenha.setText("Um e-mail será enviado com a nova senha");
 
-        esqueciSenha.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
-        esqueciSenha.setForeground(new java.awt.Color(255, 255, 255));
-        esqueciSenha.setText("Login");
-        esqueciSenha.addMouseListener(new java.awt.event.MouseAdapter() {
+        voltarAoLogin.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        voltarAoLogin.setForeground(new java.awt.Color(255, 255, 255));
+        voltarAoLogin.setText("Login");
+        voltarAoLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                esqueciSenhaMouseClicked(evt);
+                voltarAoLoginMouseClicked(evt);
             }
         });
 
@@ -137,7 +138,7 @@ public class LoginInvalido extends javax.swing.JPanel {
                         .addComponent(escudo))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(303, 303, 303)
-                        .addComponent(esqueciSenha)))
+                        .addComponent(voltarAoLogin)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -162,7 +163,7 @@ public class LoginInvalido extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(mensagemEmailNovaSenha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(esqueciSenha)
+                .addComponent(voltarAoLogin)
                 .addContainerGap(25, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -185,9 +186,13 @@ public class LoginInvalido extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_campoEmailFocusLost
 
-    private void botaoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSenhaActionPerformed
-        /*se o e-mail for o mesmo do login digitado*/
-        mensagemEmailNovaSenha.setForeground(new Color(255,255,255));
+    public void enviarEmailNovaSenha(){
+        if(campoLogin.getText().equals("admin")){
+            Professor.setPwAdemir("123");
+        }else{
+            Professor.setPwProf("123");
+        } 
+        
         try{
             
             MailSender.enviaEmailSimples("Caro usuario "+campoLogin.getText()+"\n"+
@@ -197,14 +202,21 @@ public class LoginInvalido extends javax.swing.JPanel {
         } catch (MessagingException ex) {
             Logger.getLogger(LoginInvalido.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+    
+    private void botaoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSenhaActionPerformed
+        if((campoLogin.getText().equals("admin") && campoEmail.getText().equals(Professor.getEmailAdemir()))
+            || (campoLogin).getText().equals("professor") && campoEmail.getText().equals(Professor.getEmailProf())){
+            enviarEmailNovaSenha();
+        }
+        mensagemEmailNovaSenha.setForeground(new Color(255,255,255));
     }//GEN-LAST:event_botaoSenhaActionPerformed
 
-    private void esqueciSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_esqueciSenhaMouseClicked
+    private void voltarAoLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voltarAoLoginMouseClicked
         ((Window) getRootPane().getParent()).dispose();
         JFrame novo = new TelaLogin(new Logar());
         novo.setVisible(true);
-    }//GEN-LAST:event_esqueciSenhaMouseClicked
+    }//GEN-LAST:event_voltarAoLoginMouseClicked
 
     private void campoLoginFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_campoLoginFocusGained
         // TODO add your handling code here:
@@ -224,9 +236,9 @@ public class LoginInvalido extends javax.swing.JPanel {
     private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoLogin;
     private javax.swing.JLabel escudo;
-    private javax.swing.JLabel esqueciSenha;
     private javax.swing.JLabel mensagemEmailNovaSenha;
     private javax.swing.JLabel textoEmail;
     private javax.swing.JLabel textoLogin;
+    private javax.swing.JLabel voltarAoLogin;
     // End of variables declaration//GEN-END:variables
 }

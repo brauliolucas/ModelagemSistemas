@@ -5,12 +5,10 @@
  */
 package InterfacesGraficas;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Window;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.text.DefaultCaret;
+import newschoolsoccer.Professor;
 /**
  *
  * @author John
@@ -22,6 +20,8 @@ public class Logar extends javax.swing.JPanel {
      */
     public Logar() {
         initComponents();
+        Professor.setPwAdemir("123");
+        Professor.setPwProf("123");
         campoLogin.setForeground(new Color(150, 150, 150)); 
         campoLogin.setText("Digite o seu login");
     }
@@ -91,7 +91,7 @@ public class Logar extends javax.swing.JPanel {
         });
 
         senhaIncorretaMensagem.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
-        senhaIncorretaMensagem.setForeground(new java.awt.Color(255, 0, 0));
+        senhaIncorretaMensagem.setForeground(new java.awt.Color(94, 109, 252));
         senhaIncorretaMensagem.setText("Senha e/ou usuário incorretos, tente novamente");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -169,22 +169,38 @@ public class Logar extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_campoLoginFocusLost
 
-    private void botaoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSenhaActionPerformed
-        /*necessario getSenha no usuario digitado*/
+    public void logar(){
         ((Window) getRootPane().getParent()).dispose();
         JFrame novo = null;
         if("123".equals(campoSenha.getText()))
         {
-            novo = new TelaLogin(new TrocaDeSenha());
+            novo = new TelaLogin(new TrocaDeSenha(campoLogin.getText()));
         }
         else
         {
-            novo = new JanelaComAbas();
+            novo = new JanelaComAbas(campoLogin.getText());
         }
         
         
         
         novo.setVisible(true);
+    }
+    private void botaoSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSenhaActionPerformed
+        switch(campoLogin.getText()){
+            case "admin":
+                if(campoSenha.getText().equals(Professor.getPwAdemir()))
+                    logar();
+                else senhaIncorretaMensagem.setForeground(Color.red);
+                break;
+            case "professor":
+                if(campoSenha.getText().equals(Professor.getPwProf()))
+                    logar();
+                else senhaIncorretaMensagem.setForeground(Color.red);
+                break;
+            default:
+                senhaIncorretaMensagem.setForeground(Color.red);
+        }
+        
     }//GEN-LAST:event_botaoSenhaActionPerformed
 
     private void esqueciSenhaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_esqueciSenhaMouseClicked

@@ -56,7 +56,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="303" max="-2" attributes="0"/>
-                      <Component id="esqueciSenha" min="-2" max="-2" attributes="0"/>
+                      <Component id="voltarAoLogin" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -91,7 +91,7 @@
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="mensagemEmailNovaSenha" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="esqueciSenha" min="-2" max="-2" attributes="0"/>
+              <Component id="voltarAoLogin" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="25" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -153,7 +153,7 @@
         <Property name="text" type="java.lang.String" value="Um e-mail ser&#xe1; enviado com a nova senha"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="esqueciSenha">
+    <Component class="javax.swing.JLabel" name="voltarAoLogin">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Calibri" size="18" style="0"/>
@@ -164,7 +164,7 @@
         <Property name="text" type="java.lang.String" value="Login"/>
       </Properties>
       <Events>
-        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="esqueciSenhaMouseClicked"/>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="voltarAoLoginMouseClicked"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="campoLogin">

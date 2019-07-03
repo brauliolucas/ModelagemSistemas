@@ -5,27 +5,75 @@
  */
 package newschoolsoccer;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  *
- * @author ice
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
-public class Professor extends Pessoa {
+public class Professor extends Pessoa implements Serializable{
 
-    private int login; // controle por ID 0 Admin 1 Professor
+
+    
+    private static String pwProf;
+    private static String pwAdemir;
+    private static String emailProf;
+    private static String emailAdemir;
+    
     private float salario; 
 
-    public Professor(float salario, String nome, String endereco, String telefone, int login) {
+    public Professor(float salario, String nome , String endereco, String telefone) {
         super(nome, endereco, telefone);
-        this.login = login + 3000;
         this.salario = salario;
-        
     }
     
+
+    public float getSalario() {
+        return salario;
+    }
+
+    public void setSalario(float salario) {
+        this.salario = salario;
+    }
+
+    public static String getPwProf() {
+        return pwProf;
+    }
+
+    public static void setPwProf(String pwProf) {
+        Professor.pwProf = pwProf;
+    }
+
+    public static String getPwAdemir() {
+        return pwAdemir;
+    }
+
+    public static void setPwAdemir(String pwAdemir) {
+        Professor.pwAdemir = pwAdemir;
+    }
+
+    public static String getEmailProf() {
+        return emailProf;
+    }
+
+    public static void setEmailProf(String emailProf) {
+        Professor.emailProf = emailProf;
+    }
+
+    public static String getEmailAdemir() {
+        return emailAdemir;
+    }
+
+    public static void setEmailAdemir(String emailAdemir) {
+        Professor.emailAdemir = emailAdemir;
+    }
+
     
-    
+
     public void controlePresenca(Aluno alunos[]) {
 
         for (Aluno aluno : alunos) {
@@ -47,31 +95,9 @@ public class Professor extends Pessoa {
 
     }
     
-    public void gerarEscalacao(Aluno alunos[]){
-            
-       Escalacao escalacao1 = new Escalacao();
-       for(Aluno aluno : alunos){
-        escalacao1.editarEscalacao(aluno);
-        
-       }
+
     
-    }
-
-    public int getLogin() {
-        return login;
-    }
-
-    public float getSalario() {
-        return salario;
-    }
-
-    public void setLogin(int login) {
-        this.login = login;
-    }
-
-    public void setSalario(float salario) {
-        this.salario = salario;
-    }
+    
     
     
     

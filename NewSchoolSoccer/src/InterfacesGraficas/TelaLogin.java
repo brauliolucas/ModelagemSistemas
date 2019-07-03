@@ -5,8 +5,6 @@
  */
 package InterfacesGraficas;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import javax.swing.JPanel;
 
@@ -20,6 +18,7 @@ public class TelaLogin extends javax.swing.JFrame {
      * Creates new form TelaLogin
      */
     public TelaLogin(JPanel painel) {
+        //login: admin ou professor senha: 123
         initComponents();
         setResizable(false);
         getContentPane().setBackground(new Color(94,109,252));

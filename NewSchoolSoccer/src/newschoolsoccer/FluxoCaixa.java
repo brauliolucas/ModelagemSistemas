@@ -5,55 +5,65 @@
  */
 package newschoolsoccer;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  *
- * @author Braulio
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
-public class FluxoCaixa {
+public class FluxoCaixa implements Serializable{
     
     protected float creditoMensalidades;
     protected float contasAPagar;
     protected float dinheiroemcaixa;
-    private List<Transacao> transacoes;
-    private Calendar calendario;
+    private ArrayList<Transacao> transacoes;
+    private Date calendario;
     
+    public static Date gerarDataAtual(){
+        int dia = Calendar.getInstance().DAY_OF_MONTH;
+        int mes = Calendar.getInstance().MONTH;
+        int ano = Calendar.getInstance().YEAR;
+        return new Date(ano,mes,dia);
+    }
     
-    
-    protected void retirar(float valor){
-         Transacao t = new Transacao(1,valor);
+    public void retirar(float valor){
+         Transacao t = new Transacao(1,valor,gerarDataAtual());
          transacoes.add(t);
         
     }
     
-    protected void entrada(float valor){
+    public void entrada(float valor){
         
-        Transacao t = new Transacao(0,valor);
+        Transacao t = new Transacao(0,valor,gerarDataAtual());
          transacoes.add(t);
      
     }
 
-    protected void gerarCreditoMensalidades(Aluno alunos[]){
+    public void gerarCreditoMensalidades(Aluno alunos[]){
         
         
         for (Aluno aluno : alunos){creditoMensalidades+=aluno.calculaMensalidade();}
 
     }
     
-    protected void addContasAPagar(float valor){
+    public void addContasAPagar(float valor){
         
         contasAPagar+=valor;
         
     }
     
-    protected void pagarContas(){
+    public void pagarContas(){
         
         if(contasAPagar > dinheiroemcaixa){
             System.out.println("Dinheiro insuficiente pra pagar todas as contas");
             
-            Transacao t = new Transacao(1,contasAPagar);
+            Transacao t = new Transacao(1,contasAPagar,gerarDataAtual());
             transacoes.add(t);
             
             contasAPagar -= dinheiroemcaixa;
@@ -66,7 +76,7 @@ public class FluxoCaixa {
             
             System.out.println("Dinheiro suficiente para pagar todas as contas");
             
-            Transacao t = new Transacao(1,contasAPagar);
+            Transacao t = new Transacao(1,contasAPagar,gerarDataAtual());
             transacoes.add(t);
             
             dinheiroemcaixa -= contasAPagar;
@@ -77,27 +87,39 @@ public class FluxoCaixa {
         
     }
     
-    protected void gerarRelatorio(Calendar data){
-        
+    public String gerarRelatorio(Date data1, Date data2){
+        String relatorio = "";
         for(Transacao transacao : transacoes){
             
-            if(data.compareTo(transacao.data)<0){
-                System.out.println("Transacoes antes de : " + data);
-                System.out.println("Data : " + transacao.data);
+            if(data1.compareTo(transacao.data)<0 && data2.compareTo(transacao.data)>=0){
+                
                 
                 if(transacao.tipo==0){
-                    System.out.println("Valor : +" + transacao.valor);
-                    System.out.println("Tipo : Credito");
+                    relatorio+="\nValor : +" + transacao.valor;
+                    relatorio+="\nTipo : Credito";
                 }
                 
                 else{
-                    System.out.println("Valor : -" + transacao.valor);
-                    System.out.println("Tipo : Debito");
+                    relatorio+="\nValor : -" + transacao.valor;
+                    relatorio+="\nTipo : Debito";
                 }
             }
         }
         
+        return relatorio;
+    }
+    
+    public ArrayList getPeriodo(Date data1, Date data2){
+        ArrayList<Transacao> periodo = new ArrayList();
+        for(Transacao transacao : transacoes){
+            
+            if(data1.compareTo(transacao.data)<0 && data2.compareTo(transacao.data)>=0){
+                periodo.add(transacao);
+ 
+            }
+        }
         
+       return periodo; 
     }
     
     

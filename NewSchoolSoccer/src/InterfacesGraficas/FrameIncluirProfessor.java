@@ -5,9 +5,10 @@
  */
 package InterfacesGraficas;
 
+import ClassesHelper.Controller;
+import ClassesHelper.Util;
 import java.awt.Color;
-import java.util.ArrayList;
-import newschoolsoccer.Aluno;
+import javax.swing.JFrame;
 import newschoolsoccer.Professor;
 
 /**
@@ -24,6 +25,7 @@ public class FrameIncluirProfessor extends javax.swing.JFrame {
     public FrameIncluirProfessor(int tamanho) {
         initComponents();
         this.tamanho = tamanho;
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     }
 
     private FrameIncluirProfessor() {
@@ -169,16 +171,18 @@ public class FrameIncluirProfessor extends javax.swing.JFrame {
                 float salario = Float.parseFloat(campoSalario.getText());
                 String endereco = campoEndereco.getText();
                 String telefone = campoTelefone.getText();
-                Professor p = new Professor(salario,nomeProf, endereco,telefone,tamanho);
+                Professor p = new Professor(salario,nomeProf, endereco,telefone);
+                Controller.professores.add(p);
+                Util.SaveDatabase("professores.bin", Controller.professores);
+                System.out.println("incluiu");
                 
 
                 JanelaComAbas.getInstance().setEnabled(true);
-                Object[] linha = new Object[6];
-                linha[1] = campoNome.getText();
-                linha[2] = 3000 + tamanho;
-                linha[3] = endereco;
-                linha[4] = salario;
-                linha[5] = telefone;      
+                Object[] linha = new Object[4];
+                linha[0] = nomeProf;
+                linha[1] = endereco;
+                linha[2] = salario;
+                linha[3] = telefone;      
                 JanelaComAbas.getInstance().atualizarTabelaProfs(linha);
                 JanelaComAbas.getInstance().setEnabled(true);
                 this.dispose();

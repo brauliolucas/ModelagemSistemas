@@ -5,34 +5,63 @@
  */
 package newschoolsoccer;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  *
- * @author ice
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
-public class Aluno extends Pessoa {
+public class Aluno extends Pessoa implements Serializable{
 
-    public List<Boolean> frequencia;
+    public ArrayList<Boolean> frequencia;
     protected int mensalidade; //quantidade de meses sem pagar
     protected float altura;
     protected int categoria;
     protected boolean status; //0 = inativo 1 = ativo
     protected String posicao;
 
-    public Aluno(String nome, String endereco, String telefone, Date nascimento, int mensalidade, float altura, String posicao) {
+    public Aluno(String nome, Date nascimento, String endereco, String telefone) {
         super(nome, nascimento, endereco, telefone);
-        status = true;
-        this.frequencia = new ArrayList<>();
+    }
+
+    public Aluno(float altura, String nome, Date nascimento, String endereco, String telefone, String posicao) {
+        super(nome, nascimento, endereco, telefone);
+        this.mensalidade = 1;
         this.altura = altura;
-        this.mensalidade = mensalidade;
+        this.status = true;
         this.posicao = posicao;
+        this.status = true;
         geraCategoria();
     }
 
-    public void geraCategoria() {
+    public String getPosicao() {
+        return posicao;
+    }
 
-        int x=0;
+    public void setPosicao(String posicao) {
+        this.posicao = posicao;
+    }
+
+    
+    
+    
+    public void geraCategoria() {
+        //define datas
+
+        int x = Calendar.getInstance().YEAR - nascimento.getYear();
+        if(x <= 14){
+            x = 14;
+        }else{
+            if(x <= 17){
+                 x = 17;
+            }else{
+                x = 20;
+            }
+        }
         
         
         
@@ -76,14 +105,6 @@ public class Aluno extends Pessoa {
 
     public void setStatus(boolean status) {
         this.status = status;
-    }
-
-    public void setPosicao(String posicao) {
-        this.posicao = posicao;
-    }
-
-    public String getPosicao() {
-        return posicao;
     }
 
 }

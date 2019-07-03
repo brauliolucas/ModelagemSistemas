@@ -6,17 +6,14 @@
 package newschoolsoccer;
 
 import java.util.*;
-
 /**
  *
- * @author ice
+ * @author Antônio Henrique Passamai Penizollo 
+ * @author Braulio Silva Mendes Lucas 
+ * @author João Victor Dutra Balboa 
+ * @author Marcus Vinícius Vasconcelos de A. Cunha
  */
 public class Pessoa {
-
-    String nome;
-    Date nascimento;
-    String endereco;
-    String telefone;
 
     public Pessoa(String nome, String endereco, String telefone) {
         this.nome = nome;
@@ -24,15 +21,21 @@ public class Pessoa {
         this.telefone = telefone;
     }
 
+    String nome;
+    Date nascimento;
+    String endereco;
+    String telefone;
+
     public Pessoa(String nome, Date nascimento, String endereco, String telefone) {
         this.nome = nome;
         this.nascimento = nascimento;
         this.endereco = endereco;
         this.telefone = telefone;
     }
+
     
-
-
+    
+    
     public String getNome() {
         return nome;
     }
